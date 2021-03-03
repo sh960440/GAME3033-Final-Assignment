@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerAnimationController : MonoBehaviour
 {
-    public bool isIdle, isWalking, isJumping, isStun;
+    public bool isRunning, isJumping, won, lost;
 
     private Animator animator;
     
@@ -17,10 +17,9 @@ public class PlayerAnimationController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        animator.SetBool("idle", isIdle);
-        animator.SetBool("walk", isWalking);
-        animator.SetBool("jump", isJumping);
-        animator.SetBool("stun", isStun);
-        //animator.SetTrigger("idle");
+        animator.SetBool("IsRunning", isRunning);
+        animator.SetBool("IsJumping", isJumping);
+        animator.SetBool("Win", won);
+        animator.SetBool("Lose", lost);
     }
 }
