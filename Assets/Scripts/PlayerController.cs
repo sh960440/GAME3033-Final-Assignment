@@ -18,6 +18,11 @@ public class PlayerController : MonoBehaviour
     public float jumpSpeed;
     public float gravity;
 
+    private bool movingLeft;
+    private bool movingRight;
+    private bool jumping;
+    private float horizontalMoveTimer;
+
     public GameObject[] pathArea;
     public GameObject endArea;
     private bool playerEnterPathBool;
@@ -29,6 +34,8 @@ public class PlayerController : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         GetComponent<PlayerAnimationController>().isRunning = false;
+        GetComponent<PlayerAnimationController>().isRunningLeft = false;
+        GetComponent<PlayerAnimationController>().isRunningRight = false;
         GetComponent<PlayerAnimationController>().isJumping = false;
         GetComponent<PlayerAnimationController>().won = false;
         GetComponent<PlayerAnimationController>().lost = false;
@@ -39,6 +46,11 @@ public class PlayerController : MonoBehaviour
         startGameBool = false;
         endGameBool = false;
         startGameTimer = 0.0f;
+
+        movingLeft = false;
+        movingRight = false;
+        jumping = false;
+        horizontalMoveTimer = 0.0f;
 
         int randomPathInit_1 = Random.Range(0, 3);
         Instantiate(pathArea[randomPathInit_1], new Vector3(0.62f, 0, 8.0f), Quaternion.identity);
@@ -60,12 +72,39 @@ public class PlayerController : MonoBehaviour
             {
                 moveDirection = new Vector3 (0, 0, 1);
                 moveDirection = transform.TransformDirection(moveDirection);
-                GetComponent<PlayerAnimationController>().isJumping = false;
-                if (Input.GetKeyDown(KeyCode.Space)) 
+                
+                if (movingLeft)
+                {
+                    moveDirection = new Vector3 (-2, 0, 0);
+                    moveDirection = transform.TransformDirection(moveDirection);
+                    horizontalMoveTimer += Time.deltaTime;
+                    if (horizontalMoveTimer >= 0.3f)
+                    {
+                        horizontalMoveTimer = 0.0f;
+                        movingLeft = false;
+                        GetComponent<PlayerAnimationController>().isRunningLeft = false;
+                    }
+                }
+
+                if (movingRight)
+                {
+                    moveDirection = new Vector3 (2, 0, 0);
+                    moveDirection = transform.TransformDirection(moveDirection);
+                    horizontalMoveTimer += Time.deltaTime;
+                    if (horizontalMoveTimer >= 0.3f)
+                    {
+                        horizontalMoveTimer = 0.0f;
+                        movingRight = false;
+                        GetComponent<PlayerAnimationController>().isRunningRight = false;
+                    }
+                }
+
+                //if (Input.GetKeyDown(KeyCode.Space)) 
+                if (jumping) 
                 {
                     moveDirection = new Vector3(0, jumpSpeed, 1);
                     moveDirection = transform.TransformDirection(moveDirection);
-                    GetComponent<PlayerAnimationController>().isJumping = true;
+                    //GetComponent<PlayerAnimationController>().isJumping = true;
                 }
                 moveDirection *= runSpeed;
             }
@@ -100,6 +139,30 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void moveLeftButton()
+    {
+        if (characterPosition.x > 0.1f && movingRight == false)
+        {
+            movingLeft = true;
+            GetComponent<PlayerAnimationController>().isRunningLeft = true;
+        }
+    }
+
+    public void moveRightButton()
+    {
+        if (characterPosition.x < 1.1f && movingLeft == false)
+        {
+            movingRight = true;
+            GetComponent<PlayerAnimationController>().isRunningRight = true;
+        }
+    }
+
+    public void JumpButton()
+    {
+        jumping = true;
+        GetComponent<PlayerAnimationController>().isJumping = true;
+    }
+
     void OnControllerColliderHit(ControllerColliderHit playerHit)
     {
         switch (playerHit.gameObject.tag)
@@ -127,19 +190,26 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider playerTrigger)
     {
-        if (playerTrigger.tag == "PathTrigger")
+        switch (playerTrigger.tag)
         {
-            if (pathIndex < pathMax)
-            {
-                pathIndex += 1;
-                playerEnterPathBool = true;
-            }
-            else if (pathIndex == pathMax)
-            {
-                Quaternion endAreaRotation = Quaternion.Euler(0, 180, 0);
-                Instantiate(endArea, new Vector3(0.62f, 0.0f, 8.0f * pathIndex), endAreaRotation);
-                pathIndex += 1;
-            }
+            case "NormalGround":
+                jumping = false;
+                GetComponent<PlayerAnimationController>().isJumping = false;
+                break;
+
+            case "PathTrigger":
+                if (pathIndex < pathMax)
+                {
+                    pathIndex += 1;
+                    playerEnterPathBool = true;
+                }
+                else if (pathIndex == pathMax)
+                {
+                    Quaternion endAreaRotation = Quaternion.Euler(0, 180, 0);
+                    Instantiate(endArea, new Vector3(0.62f, 0.0f, 8.0f * pathIndex), endAreaRotation);
+                    pathIndex += 1;
+                }
+                break;
         }
     }
 }

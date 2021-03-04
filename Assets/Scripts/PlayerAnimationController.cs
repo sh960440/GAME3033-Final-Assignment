@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerAnimationController : MonoBehaviour
 {
-    public bool isRunning, isJumping, won, lost;
+    public bool isRunning, isRunningLeft, isRunningRight, isJumping, won, lost;
 
     private Animator animator;
     
@@ -18,6 +18,8 @@ public class PlayerAnimationController : MonoBehaviour
     void Update()
     {
         animator.SetBool("IsRunning", isRunning);
+        animator.SetBool("RunLeft", isRunningLeft);
+        animator.SetBool("RunRight", isRunningRight);
         animator.SetBool("IsJumping", isJumping);
         animator.SetBool("Win", won);
         animator.SetBool("Lose", lost);
