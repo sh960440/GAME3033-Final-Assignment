@@ -8,6 +8,12 @@ TagManager:
   - GoalHouse
   - PathTrigger
   - NormalGround
+  - GoldCoin
+  - TreasureBox
+  - HealthFood
+  - Hurdle
+  - Food
+  - EnergyFood
   layers:
   - Default
   - TransparentFX

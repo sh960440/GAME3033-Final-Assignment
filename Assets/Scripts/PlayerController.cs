@@ -29,6 +29,11 @@ public class PlayerController : MonoBehaviour
     private int pathIndex;
     private int pathMax;
 
+    public GameObject coinSound;
+    public GameObject foodSound;
+    public GameObject hitSound;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -132,7 +137,7 @@ public class PlayerController : MonoBehaviour
 
         if (playerEnterPathBool)
         {
-            int randomPathIndex = Random.Range(0, 3);
+            int randomPathIndex = Random.Range(0, pathArea.Length);
             Instantiate(pathArea[randomPathIndex], new Vector3(0.62f, 0, 8.0f * pathIndex), Quaternion.identity);
             
             playerEnterPathBool = false;
@@ -145,6 +150,7 @@ public class PlayerController : MonoBehaviour
         {
             movingLeft = true;
             GetComponent<PlayerAnimationController>().isRunningLeft = true;
+            //Instantiate(swiftSound, characterPosition, Quaternion.identity);
         }
     }
 
@@ -154,6 +160,7 @@ public class PlayerController : MonoBehaviour
         {
             movingRight = true;
             GetComponent<PlayerAnimationController>().isRunningRight = true;
+            //Instantiate(swiftSound, characterPosition, Quaternion.identity);
         }
     }
 
@@ -161,12 +168,18 @@ public class PlayerController : MonoBehaviour
     {
         jumping = true;
         GetComponent<PlayerAnimationController>().isJumping = true;
+        //Instantiate(jumpSound, characterPosition, Quaternion.identity);
     }
 
     void OnControllerColliderHit(ControllerColliderHit playerHit)
     {
         switch (playerHit.gameObject.tag)
         {
+            case "Hurdle":
+                Debug.Log("You lose");
+                Instantiate(hitSound, characterPosition, Quaternion.identity);
+                Lose();
+                break;
             case "GoalHouse":
                 Debug.Log("You win");
                 startGameBool = false;
@@ -175,22 +188,29 @@ public class PlayerController : MonoBehaviour
                 GetComponent<PlayerAnimationController>().won = true;
                 mainCamera.GetComponent<Transform>().position = new Vector3(0.6f, 0.4f, -1.5f);
                 mainCamera.GetComponent<Transform>().rotation = Quaternion.Euler(-15.0f, 180.0f, 0.0f);
+                //Instantiate(winSound, characterPosition, Quaternion.identity);
                 break;
             case "Sea":
                 Debug.Log("You lose");
-                startGameBool = false;
-                endGameBool = true;
-                GetComponent<Transform>().position = new Vector3(0.604f, 0.0f, -2.6f);
-                GetComponent<PlayerAnimationController>().lost = true;
-                mainCamera.GetComponent<Transform>().position = new Vector3(0.6f, 0.4f, -1.5f);
-                mainCamera.GetComponent<Transform>().rotation = Quaternion.Euler(-15.0f, 180.0f, 0.0f);
+                Lose();
                 break;
         }
     }
 
-    private void OnTriggerEnter(Collider playerTrigger)
+    void Lose()
     {
-        switch (playerTrigger.tag)
+        startGameBool = false;
+        endGameBool = true;
+        GetComponent<Transform>().position = new Vector3(0.604f, 0.0f, -2.6f);
+        GetComponent<PlayerAnimationController>().lost = true;
+        mainCamera.GetComponent<Transform>().position = new Vector3(0.6f, 0.4f, -1.5f);
+        mainCamera.GetComponent<Transform>().rotation = Quaternion.Euler(-15.0f, 180.0f, 0.0f);
+        //Instantiate(loseSound, characterPosition, Quaternion.identity);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        switch (other.tag)
         {
             case "NormalGround":
                 jumping = false;
@@ -209,6 +229,57 @@ public class PlayerController : MonoBehaviour
                     Instantiate(endArea, new Vector3(0.62f, 0.0f, 8.0f * pathIndex), endAreaRotation);
                     pathIndex += 1;
                 }
+                break;
+            case "GoldCoin":
+                Destroy(other.gameObject);
+                Instantiate(coinSound, characterPosition, Quaternion.identity);
+                GameController.score++;
+                break;
+            case "TreasureBox":
+                Destroy(other.gameObject);
+                Instantiate(coinSound, characterPosition, Quaternion.identity);
+                CheckTresureType(other.gameObject.name);
+                break;
+            case "Food":
+                Destroy(other.gameObject);
+                Instantiate(foodSound, characterPosition, Quaternion.identity);
+                CheckFoodType(other.gameObject.name);
+                break;
+        }
+    }
+
+    void CheckTresureType(string name)
+    {
+        string subString = name.Substring(0, 6);
+        switch (subString)
+        {
+            case "Copper":
+                GameController.score += 3;
+                break;
+            case "Silver":
+                GameController.score += 6;
+                break;
+            case "Golden":
+                GameController.score += 10;
+                break;
+        }
+    }
+
+    void CheckFoodType(string name)
+    {
+        switch (name)
+        {
+            case "Donuts":
+                GameController.hungerValue += 0.05f;
+                break;
+            case "Cake":
+                GameController.hungerValue += 0.1f;
+                break;
+            case "Waffle":
+                GameController.hungerValue += 0.15f;
+                break;
+            case "Hamburger":
+                GameController.hungerValue += 0.2f;
                 break;
         }
     }
