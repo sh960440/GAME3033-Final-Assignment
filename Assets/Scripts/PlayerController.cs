@@ -5,66 +5,34 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private CharacterController characterController;
-    private Vector3 moveDirection = Vector3.zero;
-    private float startGameTimer;
-
     public GameObject mainCamera;
-    private Vector3 characterPosition;
-    private Vector3 cameraFollowVector;
-
-    private bool startGameBool;
-    private bool endGameBool;
+    public GameController gameController;
+    
+    [Header("Movement")]
     public float runSpeed;
     public float jumpSpeed;
     public float gravity;
+    private bool movingLeft = false;
+    private bool movingRight = false;
+    private float horizontalMoveTimer = 0.0f;
+    private Vector3 moveDirection = Vector3.zero;
 
-    private bool movingLeft;
-    private bool movingRight;
-    private bool jumping;
-    private float horizontalMoveTimer;
+    [Header("Sound effects")]
+    [SerializeField] private GameObject coinSound;
+    [SerializeField] private GameObject foodSound;
+    [SerializeField] private GameObject hitSound;
+    [SerializeField] private GameObject shiftSound;
+    [SerializeField] private GameObject jumpSound;
+    [SerializeField] private GameObject drowningSound;
 
-    public GameObject[] pathArea;
-    public GameObject endArea;
-    private bool playerEnterPathBool;
-    private int pathIndex;
-    private int pathMax;
-
-    public GameObject coinSound;
-    public GameObject foodSound;
-    public GameObject hitSound;
-
+    private bool startGameBool = false;
 
     // Start is called before the first frame update
     void Start()
     {
         characterController = GetComponent<CharacterController>();
-        GetComponent<PlayerAnimationController>().isRunning = false;
-        GetComponent<PlayerAnimationController>().isRunningLeft = false;
-        GetComponent<PlayerAnimationController>().isRunningRight = false;
-        GetComponent<PlayerAnimationController>().isJumping = false;
-        GetComponent<PlayerAnimationController>().won = false;
-        GetComponent<PlayerAnimationController>().lost = false;
 
-        mainCamera.GetComponent<Transform>().position = new Vector3(0.6f, 1.6f, -3.6f);
-        mainCamera.GetComponent<Transform>().rotation = Quaternion.Euler(20.0f, 0.0f, 0.0f);
-        
-        startGameBool = false;
-        endGameBool = false;
-        startGameTimer = 0.0f;
-
-        movingLeft = false;
-        movingRight = false;
-        jumping = false;
-        horizontalMoveTimer = 0.0f;
-
-        int randomPathInit_1 = Random.Range(0, 3);
-        Instantiate(pathArea[randomPathInit_1], new Vector3(0.62f, 0, 8.0f), Quaternion.identity);
-        int randomPathInit_2 = Random.Range(0, 3);
-        Instantiate(pathArea[randomPathInit_2], new Vector3(0.62f, 0, 16.0f), Quaternion.identity);
-
-        playerEnterPathBool = false;
-        pathIndex = 2;
-        pathMax = 6;
+        StartCoroutine(StartGame());
     }
 
     // Update is called once per frame
@@ -72,16 +40,20 @@ public class PlayerController : MonoBehaviour
     {
         if (startGameBool)
         {
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+                MoveLeft();
+
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+                MoveRight();
+
             //if (characterController.isGrounded)
-            if (transform.position.y <= 0.06)
+            if (transform.position.y <= 0.06f)
             {
-                moveDirection = new Vector3 (0, 0, 1);
-                moveDirection = transform.TransformDirection(moveDirection);
+                moveDirection = new Vector3 (0, 0, runSpeed);
                 
                 if (movingLeft)
                 {
-                    moveDirection = new Vector3 (-2, 0, 0);
-                    moveDirection = transform.TransformDirection(moveDirection);
+                    moveDirection += new Vector3 (-2, 0, 0);
                     horizontalMoveTimer += Time.deltaTime;
                     if (horizontalMoveTimer >= 0.3f)
                     {
@@ -93,8 +65,7 @@ public class PlayerController : MonoBehaviour
 
                 if (movingRight)
                 {
-                    moveDirection = new Vector3 (2, 0, 0);
-                    moveDirection = transform.TransformDirection(moveDirection);
+                    moveDirection += new Vector3 (2, 0, 0);
                     horizontalMoveTimer += Time.deltaTime;
                     if (horizontalMoveTimer >= 0.3f)
                     {
@@ -104,71 +75,49 @@ public class PlayerController : MonoBehaviour
                     }
                 }
 
-                //if (Input.GetKeyDown(KeyCode.Space)) 
-                if (jumping) 
+                if (Input.GetKeyDown(KeyCode.Space)) 
                 {
-                    moveDirection = new Vector3(0, jumpSpeed, 1);
-                    moveDirection = transform.TransformDirection(moveDirection);
-                    //GetComponent<PlayerAnimationController>().isJumping = true;
+                    moveDirection += new Vector3(0, jumpSpeed, 0);
+                    GetComponent<PlayerAnimationController>().isJumping = true;
+                    Instantiate(jumpSound, transform.position, Quaternion.identity);
                 }
-                moveDirection *= runSpeed;
             }
             moveDirection.y -= gravity * Time.deltaTime;
             characterController.Move(moveDirection * Time.deltaTime);
-        }
+            GameController.distance += moveDirection.z * Time.deltaTime;
 
-        if (startGameBool)
-        {
-            characterPosition = GetComponent<Transform>().position;
-            cameraFollowVector = new Vector3(characterPosition.x, 1.6f, characterPosition.z - 1.0f);
-            mainCamera.GetComponent<Transform>().position = cameraFollowVector;
-        }
-
-        if (!endGameBool)
-        {
-            startGameTimer += Time.deltaTime;
-            if (startGameTimer >= 1.0f)
-            {
-                startGameBool = true;
-                startGameTimer = 0.0f;
-                GetComponent<PlayerAnimationController>().isRunning = true;
-            }
-        }
-
-        if (playerEnterPathBool)
-        {
-            int randomPathIndex = Random.Range(0, pathArea.Length);
-            Instantiate(pathArea[randomPathIndex], new Vector3(0.62f, 0, 8.0f * pathIndex), Quaternion.identity);
-            
-            playerEnterPathBool = false;
+            // Camera follows the player
+            Vector3 cameraFollowVector = new Vector3(transform.position.x, 1.6f, transform.position.z - 1.0f);
+            mainCamera.transform.position = cameraFollowVector;
         }
     }
 
-    public void moveLeftButton()
+    IEnumerator StartGame()
     {
-        if (characterPosition.x > 0.1f && movingRight == false)
+        gameController.GenerateInitialPath();
+        yield return new WaitForSeconds(2.0f);
+        startGameBool = true;
+        GetComponent<PlayerAnimationController>().isRunning = true;
+    }
+
+    public void MoveLeft()
+    {
+        if (transform.position.x > 0.5f && movingRight == false)
         {
             movingLeft = true;
             GetComponent<PlayerAnimationController>().isRunningLeft = true;
-            //Instantiate(swiftSound, characterPosition, Quaternion.identity);
+            Instantiate(shiftSound, transform.position, Quaternion.identity);
         }
     }
 
-    public void moveRightButton()
+    public void MoveRight()
     {
-        if (characterPosition.x < 1.1f && movingLeft == false)
+        if (transform.position.x < 0.7f && movingLeft == false)
         {
             movingRight = true;
             GetComponent<PlayerAnimationController>().isRunningRight = true;
-            //Instantiate(swiftSound, characterPosition, Quaternion.identity);
+            Instantiate(shiftSound, transform.position, Quaternion.identity);
         }
-    }
-
-    public void JumpButton()
-    {
-        jumping = true;
-        GetComponent<PlayerAnimationController>().isJumping = true;
-        //Instantiate(jumpSound, characterPosition, Quaternion.identity);
     }
 
     void OnControllerColliderHit(ControllerColliderHit playerHit)
@@ -176,23 +125,18 @@ public class PlayerController : MonoBehaviour
         switch (playerHit.gameObject.tag)
         {
             case "Hurdle":
-                Debug.Log("You lose");
-                Instantiate(hitSound, characterPosition, Quaternion.identity);
-                Lose();
-                break;
-            case "GoalHouse":
-                Debug.Log("You win");
-                startGameBool = false;
-                endGameBool = true;
-                GetComponent<Transform>().position = new Vector3(0.604f, 0.0f, -2.6f); // Unsolved
-                GetComponent<PlayerAnimationController>().won = true;
-                mainCamera.GetComponent<Transform>().position = new Vector3(0.6f, 0.4f, -1.5f);
-                mainCamera.GetComponent<Transform>().rotation = Quaternion.Euler(-15.0f, 180.0f, 0.0f);
-                //Instantiate(winSound, characterPosition, Quaternion.identity);
+                if (startGameBool)
+                {
+                    Instantiate(hitSound, transform.position, Quaternion.identity);
+                    Lose();
+                } 
                 break;
             case "Sea":
-                Debug.Log("You lose");
-                Lose();
+                if (startGameBool)
+                {
+                    Instantiate(drowningSound, transform.position, Quaternion.identity);
+                    Lose();
+                }
                 break;
         }
     }
@@ -200,12 +144,10 @@ public class PlayerController : MonoBehaviour
     void Lose()
     {
         startGameBool = false;
-        endGameBool = true;
-        GetComponent<Transform>().position = new Vector3(0.604f, 0.0f, -2.6f);
+        transform.position = new Vector3(0.604f, 0.0f, -2.6f);
         GetComponent<PlayerAnimationController>().lost = true;
-        mainCamera.GetComponent<Transform>().position = new Vector3(0.6f, 0.4f, -1.5f);
-        mainCamera.GetComponent<Transform>().rotation = Quaternion.Euler(-15.0f, 180.0f, 0.0f);
-        //Instantiate(loseSound, characterPosition, Quaternion.identity);
+        mainCamera.transform.position = new Vector3(0.6f, 0.4f, -1.5f);
+        mainCamera.transform.rotation = Quaternion.Euler(-15.0f, 180.0f, 0.0f);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -213,36 +155,24 @@ public class PlayerController : MonoBehaviour
         switch (other.tag)
         {
             case "NormalGround":
-                jumping = false;
                 GetComponent<PlayerAnimationController>().isJumping = false;
                 break;
-
             case "PathTrigger":
-                if (pathIndex < pathMax)
-                {
-                    pathIndex += 1;
-                    playerEnterPathBool = true;
-                }
-                else if (pathIndex == pathMax)
-                {
-                    Quaternion endAreaRotation = Quaternion.Euler(0, 180, 0);
-                    Instantiate(endArea, new Vector3(0.62f, 0.0f, 8.0f * pathIndex), endAreaRotation);
-                    pathIndex += 1;
-                }
+                gameController.GenerateNewPath();
                 break;
             case "GoldCoin":
                 Destroy(other.gameObject);
-                Instantiate(coinSound, characterPosition, Quaternion.identity);
+                Instantiate(coinSound, transform.position, Quaternion.identity);
                 GameController.score++;
                 break;
             case "TreasureBox":
                 Destroy(other.gameObject);
-                Instantiate(coinSound, characterPosition, Quaternion.identity);
+                Instantiate(coinSound, transform.position, Quaternion.identity);
                 CheckTresureType(other.gameObject.name);
                 break;
             case "Food":
                 Destroy(other.gameObject);
-                Instantiate(foodSound, characterPosition, Quaternion.identity);
+                Instantiate(foodSound, transform.position, Quaternion.identity);
                 CheckFoodType(other.gameObject.name);
                 break;
         }
@@ -270,16 +200,16 @@ public class PlayerController : MonoBehaviour
         switch (name)
         {
             case "Donuts":
-                GameController.hungerValue += 0.05f;
+                GameController.foodValue += 0.05f;
                 break;
             case "Cake":
-                GameController.hungerValue += 0.1f;
+                GameController.foodValue += 0.1f;
                 break;
             case "Waffle":
-                GameController.hungerValue += 0.15f;
+                GameController.foodValue += 0.15f;
                 break;
             case "Hamburger":
-                GameController.hungerValue += 0.2f;
+                GameController.foodValue += 0.2f;
                 break;
         }
     }

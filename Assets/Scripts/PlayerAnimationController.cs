@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PlayerAnimationController : MonoBehaviour
 {
-    public bool isRunning, isRunningLeft, isRunningRight, isJumping, won, lost;
+    public bool isRunning, isRunningLeft, isRunningRight, isJumping, lost = false;
 
     private Animator animator;
     
     // Start is called before the first frame update
     void Start()
     {
-        animator = this.GetComponent<Animator>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -21,7 +21,6 @@ public class PlayerAnimationController : MonoBehaviour
         animator.SetBool("RunLeft", isRunningLeft);
         animator.SetBool("RunRight", isRunningRight);
         animator.SetBool("IsJumping", isJumping);
-        animator.SetBool("Win", won);
         animator.SetBool("Lose", lost);
     }
 }

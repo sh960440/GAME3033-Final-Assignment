@@ -5,38 +5,86 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    public static int lives;
-    public Text livesText;
-    public static float hungerValue;
-    public Image hungerBar;
-    public static int score;
+    [Header("Player status")]
+    public static float foodValue;
+    public Image foodBar;
+    public static float drinkValue;
+    public Image drinkBar;
+
+    [Header("Game progress")]
+    public static float score;
     public Text scoreText;
+    public static float distance;
+    public Text distanceText;
+
+    [Header("Path Generation")]
+    public GameObject[] pathArea;
+    [SerializeField] private int pathIndex;
+    [SerializeField] private int pathMax;
+
+    [Header("Other Screens")]
+    [SerializeField] private GameObject pauseScreen;
+    [SerializeField] private GameObject gameoverScreen;
+
 
 
     // Start is called before the first frame update
     void Start()
     {
-        lives = 30;
-        livesText.text = "X 30";
-
-        hungerValue = 0;
-        hungerBar.fillAmount = 0;
-
-        score = 0;
-        scoreText.text = "0";
+        Reset();
     }
 
     // Update is called once per frame
     void Update()
     {
-        livesText.text = "X " + lives;
-        hungerBar.fillAmount = hungerValue;
-        scoreText.text = score.ToString();
+        foodBar.fillAmount = foodValue;
+        drinkBar.fillAmount = drinkValue;
+        scoreText.text = score.ToString("0");
+        distanceText.text = distance.ToString("0.0") + "m";
 
-        if (hungerValue >= 1.0f)
+        if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape))
         {
-            hungerValue = 0;
-            lives++;
+            Pause();
         }
-    }   
+    }
+
+    public void GenerateInitialPath()
+    {
+        Instantiate(pathArea[Random.Range(0, pathArea.Length)], new Vector3(0.62f, 0,  8.0f), Quaternion.identity);
+        Instantiate(pathArea[Random.Range(0, pathArea.Length)], new Vector3(0.62f, 0, 16.0f), Quaternion.identity);
+    }
+
+    public void GenerateNewPath()
+    {
+        if (pathIndex < pathMax)
+        {
+            pathIndex += 1;
+            Instantiate(pathArea[Random.Range(0, pathArea.Length)], new Vector3(0.62f, 0, 8.0f * pathIndex), Quaternion.identity);
+        }
+    }
+
+    public void Reset()
+    {
+        foodValue = 0.5f;
+        drinkValue = 0.5f;
+        score = 0.0f;
+        distance = 0.0f;
+    }
+
+    public void Pause()
+    {
+        Time.timeScale = 0;
+        pauseScreen.SetActive(true);
+    }
+
+    public void Resume()
+    {
+        Time.timeScale = 1;
+        pauseScreen.SetActive(false);
+    }
+
+    public void MainMenu()
+    {
+        Time.timeScale = 1;
+    }
 }
