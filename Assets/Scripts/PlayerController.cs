@@ -128,14 +128,16 @@ public class PlayerController : MonoBehaviour
                 if (startGameBool)
                 {
                     Instantiate(hitSound, transform.position, Quaternion.identity);
-                    Lose();
+                    //Lose();
+                    GameOver(); // Temporary
                 } 
                 break;
             case "Sea":
                 if (startGameBool)
                 {
                     Instantiate(drowningSound, transform.position, Quaternion.identity);
-                    Lose();
+                    //Lose();
+                    GameOver(); // Temporary
                 }
                 break;
         }
@@ -148,6 +150,12 @@ public class PlayerController : MonoBehaviour
         GetComponent<PlayerAnimationController>().lost = true;
         mainCamera.transform.position = new Vector3(0.6f, 0.4f, -1.5f);
         mainCamera.transform.rotation = Quaternion.Euler(-15.0f, 180.0f, 0.0f);
+    }
+
+    public void GameOver()
+    {
+        Time.timeScale = 0;
+        gameController.DisplayGameoverScreen();
     }
 
     private void OnTriggerEnter(Collider other)

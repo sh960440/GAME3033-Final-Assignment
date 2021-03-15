@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -25,6 +26,8 @@ public class GameController : MonoBehaviour
     [Header("Other Screens")]
     [SerializeField] private GameObject pauseScreen;
     [SerializeField] private GameObject gameoverScreen;
+    [SerializeField] private Text finalDistance;
+    [SerializeField] private Text finalScore;
 
 
 
@@ -60,6 +63,12 @@ public class GameController : MonoBehaviour
         {
             pathIndex += 1;
             Instantiate(pathArea[Random.Range(0, pathArea.Length)], new Vector3(0.62f, 0, 8.0f * pathIndex), Quaternion.identity);
+            {
+                if (pathIndex % 5 == 0)
+                {
+                    FindObjectOfType<PlayerController>().runSpeed += 0.15f;
+                }
+            }
         }
     }
 
@@ -86,5 +95,24 @@ public class GameController : MonoBehaviour
     public void MainMenu()
     {
         Time.timeScale = 1;
+        SceneManager.LoadScene("Menu");
+    }
+
+    public void Replay()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("Game");
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
+    public void DisplayGameoverScreen()
+    {
+        finalDistance.text = "Distance: " + distance.ToString("0.0") + " m";
+        finalScore.text = "Score: " + score.ToString();
+        gameoverScreen.SetActive(true);
     }
 }
