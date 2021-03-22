@@ -1,5 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml.Serialization;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -13,7 +16,7 @@ public class GameController : MonoBehaviour
     public Image drinkBar;
 
     [Header("Game progress")]
-    public static float score;
+    public static int score;
     public Text scoreText;
     public static float distance;
     public Text distanceText;
@@ -29,12 +32,38 @@ public class GameController : MonoBehaviour
     [SerializeField] private Text finalDistance;
     [SerializeField] private Text finalScore;
 
-
-
     // Start is called before the first frame update
     void Start()
     {
         Reset();
+
+        if (File.Exists(Application.dataPath + "/Distance.txt")) 
+        {
+            FileStream fs = new FileStream(Application.dataPath + "/Distance.txt", FileMode.Open);
+
+            StreamReader sr = new StreamReader(fs);
+            for (int i = 0; i < 5; i++)
+            {
+                GameRecord.distanceRanking[i] = float.Parse(sr.ReadLine());
+            }
+
+            sr.Close();
+            fs.Close();
+        }
+
+        if (File.Exists(Application.dataPath + "/Score.txt")) 
+        {
+            FileStream fs = new FileStream(Application.dataPath + "/Score.txt", FileMode.Open);
+
+            StreamReader sr = new StreamReader(fs);
+            for (int i = 0; i < 5; i++)
+            {
+                GameRecord.scoreRanking[i] = int.Parse(sr.ReadLine());
+            }
+
+            sr.Close();
+            fs.Close();
+        }
     }
 
     // Update is called once per frame
@@ -42,7 +71,7 @@ public class GameController : MonoBehaviour
     {
         foodBar.fillAmount = foodValue;
         drinkBar.fillAmount = drinkValue;
-        scoreText.text = score.ToString("0");
+        scoreText.text = score.ToString();
         distanceText.text = distance.ToString("0.0") + "m";
 
         if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape))
@@ -76,7 +105,7 @@ public class GameController : MonoBehaviour
     {
         foodValue = 0.5f;
         drinkValue = 0.5f;
-        score = 0.0f;
+        score = 0;
         distance = 0.0f;
     }
 
@@ -113,6 +142,73 @@ public class GameController : MonoBehaviour
     {
         finalDistance.text = "Distance: " + distance.ToString("0.0") + " m";
         finalScore.text = "Score: " + score.ToString();
+
+        SaveDistanceRecords();
+        SaveScoreRecords();
+
         gameoverScreen.SetActive(true);
+    }
+
+    private void SaveDistanceRecords()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            if (distance > GameRecord.distanceRanking[i])
+            {
+                for (int j = 4; j >= 0; j--)
+                {
+                    if (i == j)
+                    {
+                        GameRecord.distanceRanking[j] = distance;
+                        break;
+                    }
+                    else
+                    {
+                        GameRecord.distanceRanking[j] = GameRecord.distanceRanking[j-1];
+                    }
+                }
+                break;
+            }
+        }
+
+        FileStream fs = new FileStream(Application.dataPath + "/Distance.txt", FileMode.Create);
+        StreamWriter sw = new StreamWriter(fs);
+        for (int i = 0; i < 5; i++)
+        {
+            sw.WriteLine(GameRecord.distanceRanking[i]);
+        }
+        sw.Close();
+        fs.Close();
+    }
+    private void SaveScoreRecords()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            if (score > GameRecord.scoreRanking[i])
+            {
+                for (int j = 4; j >= 0; j--)
+                {
+                    if (i == j)
+                    {
+                        GameRecord.scoreRanking[j] = score;
+                        break;
+                    }
+                    else
+                    {
+                        GameRecord.scoreRanking[j] = GameRecord.scoreRanking[j-1];
+                    }
+                }
+                break;
+            }
+        }
+
+        FileStream fs = new FileStream(Application.dataPath + "/Score.txt", FileMode.Create);
+        StreamWriter sw = new StreamWriter(fs);
+        for (int i = 0; i < 5; i++)
+        {
+            sw.WriteLine(GameRecord.scoreRanking[i]);
+        }
+        sw.Close();
+        fs.Close();
     }
 }

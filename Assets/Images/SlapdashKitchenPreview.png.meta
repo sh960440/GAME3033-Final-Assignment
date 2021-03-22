@@ -1,0 +1,576 @@
+fileFormatVersion: 2
+guid: eac805200e5d23c4680c5de5b5f12379
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5567475004793809086
+    second: SlapdashKitchenPreview_0
+  - first:
+      213: 3537778630940560247
+    second: SlapdashKitchenPreview_1
+  - first:
+      213: -8541206203092362730
+    second: SlapdashKitchenPreview_2
+  - first:
+      213: -1898597680575801823
+    second: SlapdashKitchenPreview_3
+  - first:
+      213: -302231887904073261
+    second: SlapdashKitchenPreview_4
+  - first:
+      213: -4281122999998271537
+    second: SlapdashKitchenPreview_5
+  - first:
+      213: -3079830713668541215
+    second: SlapdashKitchenPreview_6
+  - first:
+      213: -1904668582205808012
+    second: SlapdashKitchenPreview_7
+  - first:
+      213: -1487206119253473622
+    second: SlapdashKitchenPreview_8
+  - first:
+      213: -1192911455725548627
+    second: SlapdashKitchenPreview_9
+  - first:
+      213: 8658990128611517026
+    second: SlapdashKitchenPreview_10
+  - first:
+      213: 7053236157647549317
+    second: SlapdashKitchenPreview_11
+  - first:
+      213: 2665864429965598004
+    second: SlapdashKitchenPreview_12
+  - first:
+      213: 4527804818895156687
+    second: SlapdashKitchenPreview_13
+  - first:
+      213: 5203475126863340851
+    second: SlapdashKitchenPreview_14
+  - first:
+      213: 1169039091893475689
+    second: SlapdashKitchenPreview_15
+  - first:
+      213: 2219866072142806215
+    second: SlapdashKitchenPreview_16
+  - first:
+      213: 2273774512114965239
+    second: SlapdashKitchenPreview_17
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SlapdashKitchenPreview_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 206.66666
+        width: 109
+        height: 103.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb8e994e405a34d40800000000000000
+      internalID: 5567475004793809086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlapdashKitchenPreview_1
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 206.66666
+        width: 109
+        height: 103.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77b0e2fbbe6b81130800000000000000
+      internalID: 3537778630940560247
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlapdashKitchenPreview_2
+      rect:
+        serializedVersion: 2
+        x: 218
+        y: 206.66666
+        width: 109
+        height: 103.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 61a1157263a877980800000000000000
+      internalID: -8541206203092362730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlapdashKitchenPreview_3
+      rect:
+        serializedVersion: 2
+        x: 327
+        y: 206.66666
+        width: 109
+        height: 103.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 12616edf773d6a5e0800000000000000
+      internalID: -1898597680575801823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlapdashKitchenPreview_4
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 206.66666
+        width: 109
+        height: 103.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d99ea103b14ecbf0800000000000000
+      internalID: -302231887904073261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlapdashKitchenPreview_5
+      rect:
+        serializedVersion: 2
+        x: 545
+        y: 206.66666
+        width: 109
+        height: 103.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fcf295950556694c0800000000000000
+      internalID: -4281122999998271537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlapdashKitchenPreview_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 103.666664
+        width: 109
+        height: 103.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e4e277984e3245d0800000000000000
+      internalID: -3079830713668541215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlapdashKitchenPreview_7
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 103.666664
+        width: 109
+        height: 103.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 472a6ce04024195e0800000000000000
+      internalID: -1904668582205808012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlapdashKitchenPreview_8
+      rect:
+        serializedVersion: 2
+        x: 218
+        y: 103.666664
+        width: 109
+        height: 103.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa60c120ae16c5be0800000000000000
+      internalID: -1487206119253473622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlapdashKitchenPreview_9
+      rect:
+        serializedVersion: 2
+        x: 327
+        y: 103.666664
+        width: 109
+        height: 103.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dab0cf0f95de17fe0800000000000000
+      internalID: -1192911455725548627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlapdashKitchenPreview_10
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 103.666664
+        width: 109
+        height: 103.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 262e08905a9ea2870800000000000000
+      internalID: 8658990128611517026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlapdashKitchenPreview_11
+      rect:
+        serializedVersion: 2
+        x: 545
+        y: 103.666664
+        width: 109
+        height: 103.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 583f58d6ae022e160800000000000000
+      internalID: 7053236157647549317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlapdashKitchenPreview_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0.6666641
+        width: 109
+        height: 103.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43dd27f139d0ff420800000000000000
+      internalID: 2665864429965598004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlapdashKitchenPreview_13
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 16
+        width: 92
+        height: 86
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc53c825e7ef5de30800000000000000
+      internalID: 4527804818895156687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlapdashKitchenPreview_14
+      rect:
+        serializedVersion: 2
+        x: 218
+        y: 0.6666641
+        width: 109
+        height: 103.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 33525460f05763840800000000000000
+      internalID: 5203475126863340851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlapdashKitchenPreview_15
+      rect:
+        serializedVersion: 2
+        x: 327
+        y: 0.6666641
+        width: 109
+        height: 103.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9691bd83cd2493010800000000000000
+      internalID: 1169039091893475689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlapdashKitchenPreview_16
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 0.6666641
+        width: 109
+        height: 103.333336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7cc73076e6c8ece10800000000000000
+      internalID: 2219866072142806215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SlapdashKitchenPreview_17
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 17
+        width: 90
+        height: 87
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7fa13fd2fd11e8f10800000000000000
+      internalID: 2273774512114965239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: cd79d57fb58d4df4690879abcd0e5eb4
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

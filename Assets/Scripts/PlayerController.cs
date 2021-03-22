@@ -47,31 +47,29 @@ public class PlayerController : MonoBehaviour
                 MoveRight();
 
             //if (characterController.isGrounded)
-            if (transform.position.y <= 0.06f)
+            if (transform.position.y <= 0.081f)
             {
                 moveDirection = new Vector3 (0, 0, runSpeed);
                 
                 if (movingLeft)
                 {
-                    moveDirection += new Vector3 (-2, 0, 0);
+                    moveDirection += new Vector3 (-2.5f, 0, 0);
                     horizontalMoveTimer += Time.deltaTime;
                     if (horizontalMoveTimer >= 0.3f)
                     {
                         horizontalMoveTimer = 0.0f;
                         movingLeft = false;
-                        GetComponent<PlayerAnimationController>().isRunningLeft = false;
                     }
                 }
 
                 if (movingRight)
                 {
-                    moveDirection += new Vector3 (2, 0, 0);
+                    moveDirection += new Vector3 (2.5f, 0, 0);
                     horizontalMoveTimer += Time.deltaTime;
                     if (horizontalMoveTimer >= 0.3f)
                     {
                         horizontalMoveTimer = 0.0f;
                         movingRight = false;
-                        GetComponent<PlayerAnimationController>().isRunningRight = false;
                     }
                 }
 
@@ -95,7 +93,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator StartGame()
     {
         gameController.GenerateInitialPath();
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(3.0f);
         startGameBool = true;
         GetComponent<PlayerAnimationController>().isRunning = true;
     }
@@ -105,7 +103,6 @@ public class PlayerController : MonoBehaviour
         if (transform.position.x > 0.5f && movingRight == false)
         {
             movingLeft = true;
-            GetComponent<PlayerAnimationController>().isRunningLeft = true;
             Instantiate(shiftSound, transform.position, Quaternion.identity);
         }
     }
@@ -115,7 +112,6 @@ public class PlayerController : MonoBehaviour
         if (transform.position.x < 0.7f && movingLeft == false)
         {
             movingRight = true;
-            GetComponent<PlayerAnimationController>().isRunningRight = true;
             Instantiate(shiftSound, transform.position, Quaternion.identity);
         }
     }
@@ -143,17 +139,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Lose()
-    {
-        startGameBool = false;
-        transform.position = new Vector3(0.604f, 0.0f, -2.6f);
-        GetComponent<PlayerAnimationController>().lost = true;
-        mainCamera.transform.position = new Vector3(0.6f, 0.4f, -1.5f);
-        mainCamera.transform.rotation = Quaternion.Euler(-15.0f, 180.0f, 0.0f);
-    }
-
     public void GameOver()
     {
+        //GetComponent<PlayerAnimationController>().lost = true;
         Time.timeScale = 0;
         gameController.DisplayGameoverScreen();
     }
@@ -183,6 +171,11 @@ public class PlayerController : MonoBehaviour
                 Instantiate(foodSound, transform.position, Quaternion.identity);
                 CheckFoodType(other.gameObject.name);
                 break;
+            case "Drink":
+                Destroy(other.gameObject);
+                Instantiate(foodSound, transform.position, Quaternion.identity);
+                CheckDrinkType(other.gameObject.name);
+                break;
         }
     }
 
@@ -207,17 +200,30 @@ public class PlayerController : MonoBehaviour
     {
         switch (name)
         {
-            case "Donuts":
-                GameController.foodValue += 0.05f;
-                break;
             case "Cake":
                 GameController.foodValue += 0.1f;
                 break;
-            case "Waffle":
+            case "Donuts":
                 GameController.foodValue += 0.15f;
                 break;
             case "Hamburger":
                 GameController.foodValue += 0.2f;
+                break;
+        }
+    }
+
+    void CheckDrinkType(string name)
+    {
+        switch (name)
+        {
+            case "Drink_Blue":
+                GameController.drinkValue += 0.1f;
+                break;
+            case "Drink_Green":
+                GameController.drinkValue += 0.15f;
+                break;
+            case "Drink_Red":
+                GameController.drinkValue += 0.2f;
                 break;
         }
     }
