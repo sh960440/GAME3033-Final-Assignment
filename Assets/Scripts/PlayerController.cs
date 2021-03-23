@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -24,6 +25,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject shiftSound;
     [SerializeField] private GameObject jumpSound;
     [SerializeField] private GameObject drowningSound;
+    [SerializeField] private GameObject hungerSound;
+
+    [Header("Countdown")]
+    [SerializeField] private Image countdown;
+    [SerializeField] private Sprite[] numbers;
 
     private bool startGameBool = false;
 
@@ -87,13 +93,30 @@ public class PlayerController : MonoBehaviour
             // Camera follows the player
             Vector3 cameraFollowVector = new Vector3(transform.position.x, 1.6f, transform.position.z - 1.0f);
             mainCamera.transform.position = cameraFollowVector;
+
+            // Food & Drink
+            GameController.foodValue -= Time.deltaTime / 200.0f;
+            GameController.drinkValue -= Time.deltaTime / 200.0f;
+            if (GameController.foodValue <= 0 || GameController.drinkValue <= 0)
+            {   
+                startGameBool = false;
+                Instantiate(hungerSound, transform.position, Quaternion.identity);
+                GameOver();
+            }
         }
     }
 
     IEnumerator StartGame()
     {
         gameController.GenerateInitialPath();
-        yield return new WaitForSeconds(3.0f);
+        
+        yield return new WaitForSeconds(1.0f);
+        countdown.sprite = numbers[1];
+        yield return new WaitForSeconds(1.0f);
+        countdown.sprite = numbers[2];
+        yield return new WaitForSeconds(1.0f);
+        countdown.gameObject.SetActive(false);
+
         startGameBool = true;
         GetComponent<PlayerAnimationController>().isRunning = true;
     }
@@ -124,16 +147,14 @@ public class PlayerController : MonoBehaviour
                 if (startGameBool)
                 {
                     Instantiate(hitSound, transform.position, Quaternion.identity);
-                    //Lose();
-                    GameOver(); // Temporary
+                    GameOver();
                 } 
                 break;
             case "Sea":
                 if (startGameBool)
                 {
                     Instantiate(drowningSound, transform.position, Quaternion.identity);
-                    //Lose();
-                    GameOver(); // Temporary
+                    GameOver();
                 }
                 break;
         }
@@ -141,7 +162,6 @@ public class PlayerController : MonoBehaviour
 
     public void GameOver()
     {
-        //GetComponent<PlayerAnimationController>().lost = true;
         Time.timeScale = 0;
         gameController.DisplayGameoverScreen();
     }
@@ -201,13 +221,13 @@ public class PlayerController : MonoBehaviour
         switch (name)
         {
             case "Cake":
-                GameController.foodValue += 0.1f;
+                FindObjectOfType<Inventory>().GetItem(Item.CAKE);
                 break;
             case "Donuts":
-                GameController.foodValue += 0.15f;
+                FindObjectOfType<Inventory>().GetItem(Item.DONUT);
                 break;
             case "Hamburger":
-                GameController.foodValue += 0.2f;
+                FindObjectOfType<Inventory>().GetItem(Item.BURGER);
                 break;
         }
     }
@@ -217,13 +237,13 @@ public class PlayerController : MonoBehaviour
         switch (name)
         {
             case "Drink_Blue":
-                GameController.drinkValue += 0.1f;
+                FindObjectOfType<Inventory>().GetItem(Item.BLUE);
                 break;
             case "Drink_Green":
-                GameController.drinkValue += 0.15f;
+                FindObjectOfType<Inventory>().GetItem(Item.GREEN);
                 break;
             case "Drink_Red":
-                GameController.drinkValue += 0.2f;
+                FindObjectOfType<Inventory>().GetItem(Item.RED);
                 break;
         }
     }
