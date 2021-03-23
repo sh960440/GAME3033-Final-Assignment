@@ -46,10 +46,10 @@ public class PlayerController : MonoBehaviour
     {
         if (startGameBool)
         {
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
                 MoveLeft();
 
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            if (Input.GetKeyDown(KeyCode.RightArrow))
                 MoveRight();
 
             //if (characterController.isGrounded)
@@ -57,34 +57,37 @@ public class PlayerController : MonoBehaviour
             {
                 moveDirection = new Vector3 (0, 0, runSpeed);
                 
-                if (movingLeft)
-                {
-                    moveDirection += new Vector3 (-2.5f, 0, 0);
-                    horizontalMoveTimer += Time.deltaTime;
-                    if (horizontalMoveTimer >= 0.3f)
-                    {
-                        horizontalMoveTimer = 0.0f;
-                        movingLeft = false;
-                    }
-                }
-
-                if (movingRight)
-                {
-                    moveDirection += new Vector3 (2.5f, 0, 0);
-                    horizontalMoveTimer += Time.deltaTime;
-                    if (horizontalMoveTimer >= 0.3f)
-                    {
-                        horizontalMoveTimer = 0.0f;
-                        movingRight = false;
-                    }
-                }
-
                 if (Input.GetKeyDown(KeyCode.Space)) 
                 {
                     moveDirection += new Vector3(0, jumpSpeed, 0);
                     GetComponent<PlayerAnimationController>().isJumping = true;
                     Instantiate(jumpSound, transform.position, Quaternion.identity);
                 }
+                else
+                {
+                    if (movingLeft)
+                    {
+                        moveDirection += new Vector3 (-2.5f, 0, 0);
+                        horizontalMoveTimer += Time.deltaTime;
+                        if (horizontalMoveTimer >= 0.3f)
+                        {
+                            horizontalMoveTimer = 0.0f;
+                            movingLeft = false;
+                        }
+                    }
+                    else if (movingRight)
+                    {
+                        moveDirection += new Vector3 (2.5f, 0, 0);
+                        horizontalMoveTimer += Time.deltaTime;
+                        if (horizontalMoveTimer >= 0.3f)
+                        {
+                            horizontalMoveTimer = 0.0f;
+                            movingRight = false;
+                        }
+                    }
+                }
+
+                
             }
             moveDirection.y -= gravity * Time.deltaTime;
             characterController.Move(moveDirection * Time.deltaTime);
